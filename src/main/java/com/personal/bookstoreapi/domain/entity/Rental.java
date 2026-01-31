@@ -52,6 +52,6 @@ public class Rental {
     @Column(nullable = false, length = 20)
     private RentalStatus status;
 
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal pricePaid;
+    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalAmount;
 }
