@@ -13,14 +13,21 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "book_items")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -44,9 +51,11 @@ public abstract class BookItem {
     @Column(precision = 12, scale = 2)
     private BigDecimal rentPrice; // nullable daca availableForRent=false
 
+    @Builder.Default
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
 
+    @Builder.Default
     @Column(nullable = false)
     private Instant updatedAt = Instant.now();
 }
