@@ -35,28 +35,44 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
+
+        System.out.println("AUTH HEADER = " + request.getHeader("Authorization"));
+        System.out.println("PATH = " + request.getRequestURI());
+
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = header.substring(7);
+
         try {
             Claims claims = jwtService.parseClaims(token);
             String email = claims.getSubject();
 
-            User user = userRepository.findByEmail(email)
-                                      .orElse(null);
-            if (user != null) {
-                var auth = new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        null,
-                        Collections.emptyList()
-                );
-                SecurityContextHolder.getContext()
-                                     .setAuthentication(auth);
+            if (email != null && SecurityContextHolder.getContext()
+                                                      .getAuthentication() == null) {
+
+                User user = userRepository.findByEmail(email)
+                                          .orElse(null);
+
+                if (user != null) {
+                    var auth = new UsernamePasswordAuthenticationToken(
+                            user.getEmail(),
+                            null,
+                            Collections.emptyList()
+                    );
+
+                    auth.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                            .buildDetails(request));
+
+                    SecurityContextHolder.getContext()
+                                         .setAuthentication(auth);
+                }
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            System.out.println("JWT ERROR: " + e.getClass()
+                                                .getSimpleName() + " - " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);
