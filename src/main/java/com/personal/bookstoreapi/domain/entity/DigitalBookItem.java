@@ -18,9 +18,9 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("DIGITAL")
 public class DigitalBookItem extends BookItem {
 
-    @Column(length = 500, name = "file_url", nullable = true)
+    @Column(length = 500, name = "file_url")
     private String fileUrl;
 
-    @Column(length = 20 , name = "file_format", nullable = true)
+    @Column(length = 20 , name = "file_format")
     private String fileFormat; // PDF, EPUB, MOBI, etc.
 }

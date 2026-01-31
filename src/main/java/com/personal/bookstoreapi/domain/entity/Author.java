@@ -27,8 +27,4 @@ public class Author {
 
     @Column(nullable = false, length = 140)
     private String name;
-
-    public Author(String authorName) {
-        this.name = authorName;
-    }
 }

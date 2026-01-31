@@ -18,9 +18,9 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("PHYSICAL")
 public class PhysicalBookItem extends BookItem {
 
-    @Column(name = "stock_quantity", nullable = true)
+    @Column(name = "stock_quantity")
     private Integer stockQuantity;
 
-    @Column(name = "weight_grams", nullable = true)
+    @Column(name = "weight_grams")
     private Integer weightGrams;
 }
