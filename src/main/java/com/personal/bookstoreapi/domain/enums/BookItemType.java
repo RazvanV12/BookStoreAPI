@@ -1,4 +1,4 @@
-package com.personal.bookstoreapi.domain;
+package com.personal.bookstoreapi.domain.enums;
 
 public enum BookItemType {
     PHYSICAL,
