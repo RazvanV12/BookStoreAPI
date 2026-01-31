@@ -2,6 +2,7 @@ package com.personal.bookstoreapi.config;
 
 import com.personal.bookstoreapi.exception.ApiError;
 import com.personal.bookstoreapi.exception.ConflictException;
+import com.personal.bookstoreapi.exception.NotFoundException;
 import com.personal.bookstoreapi.exception.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -132,6 +133,15 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(body);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(NotFoundException ex, HttpServletRequest req) {
+        String traceId = UUID.randomUUID()
+                             .toString();
+        ApiError body = ApiError.of(404, "Not Found", ex.getMessage(), req.getRequestURI(), traceId);
+        return ResponseEntity.status(404)
                              .body(body);
     }
 
